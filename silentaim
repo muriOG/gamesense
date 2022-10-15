@@ -6,12 +6,6 @@ local localPlayer = players.LocalPlayer
 local currentCamera = game:GetService("Workspace").CurrentCamera
 local mouse = localPlayer:GetMouse()
 
-
-
-if not getgenv().fov_color then
-    getgenv().fov_color = Color3.fromRGB(255, 0, 68)
-end
-
 if not getgenv().SilentAim then
     getgenv().SilentAim = {
         Enabled = true,
@@ -20,13 +14,6 @@ if not getgenv().SilentAim then
         FOV = 300,
         HitChance = 100,
     }
-end
-
-function isPartVisible(part)
-    local camera = game.GetService(game, "Workspace").CurrentCamera
-    local character = game.GetService(game, "Players").LocalPlayer.Character.GetDescendants(game.GetService(game, "Players").LocalPlayer.Character)
-    local castPoints = {part.Position}
-    return camera.GetPartsObscuringTarget(camera, castPoints, character)
 end
 
 setreadonly(math, false); math.chance = function(percentage) local percentage = math.floor(percentage); local chance = math.floor(Random.new().NextNumber(Random.new(), 0, 1) * 100)/100; return chance <= percentage/100 end; setreadonly(math, true);
