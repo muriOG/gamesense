@@ -15,7 +15,7 @@ end
 if not getgenv().SilentAim then
     getgenv().SilentAim = {
         Enabled = true,
-        FOVRep = true,
+        FOVRep = false,
         TeamCheck = false,
         VisibleCheck = false,
         FOV = 300,
@@ -27,7 +27,7 @@ end
 local circle = Drawing.new("Circle")
 function updateCircle()
     if circle.__OBJECT_EXISTS then
-        circle.Transparency = 100
+        circle.Transparency = 1
         circle.Visible = SilentAim["FOVRep"]
         circle.Thickness = 2
         circle.Color = getgenv().fov_color
