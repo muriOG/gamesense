@@ -1,4 +1,4 @@
-loal players = game:GetService("Players")
+local players = game:GetService("Players")
 local guiservice = game:GetService("GuiService")
 local runservice = game:GetService("RunService")
 local renderstepped = runservice.RenderStepped
@@ -6,14 +6,45 @@ local localPlayer = players.LocalPlayer
 local currentCamera = game:GetService("Workspace").CurrentCamera
 local mouse = localPlayer:GetMouse()
 
+
+
+if not getgenv().fov_color then
+    getgenv().fov_color = Color3.fromRGB(255, 0, 68)
+end
+
 if not getgenv().SilentAim then
     getgenv().SilentAim = {
         Enabled = true,
-        TeamCheck = true,
+        FOVRep = true,
+        TeamCheck = false,
         VisibleCheck = false,
         FOV = 300,
         HitChance = 100,
     }
+end
+
+
+local circle = Drawing.new("Circle")
+function updateCircle()
+    if circle.__OBJECT_EXISTS then
+        circle.Transparency = 100
+        circle.Visible = SilentAim["FOVRep"]
+        circle.Thickness = 2
+        circle.Color = getgenv().fov_color
+        circle.NumSides = 12
+        circle.Radius = (SilentAim["FOV"] * 6) / 2
+        circle.Filled = false
+        circle.Position = Vector2.new(mouse.X, mouse.Y + (guiservice.GetGuiInset(guiservice).Y))
+    end
+end
+renderstepped.Connect(renderstepped, updateCircle)
+
+
+function isPartVisible(part)
+    local camera = game.GetService(game, "Workspace").CurrentCamera
+    local character = game.GetService(game, "Players").LocalPlayer.Character.GetDescendants(game.GetService(game, "Players").LocalPlayer.Character)
+    local castPoints = {part.Position}
+    return camera.GetPartsObscuringTarget(camera, castPoints, character)
 end
 
 setreadonly(math, false); math.chance = function(percentage) local percentage = math.floor(percentage); local chance = math.floor(Random.new().NextNumber(Random.new(), 0, 1) * 100)/100; return chance <= percentage/100 end; setreadonly(math, true);
